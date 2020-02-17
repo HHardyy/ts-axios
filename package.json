@@ -1,15 +1,15 @@
 {
-  "name": "--libraryname--",
+  "name": "ts-axios",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/--libraryname--.umd.js",
-  "module": "dist/--libraryname--.es5.js",
-  "typings": "dist/types/--libraryname--.d.ts",
+  "main": "dist/ts-axios.umd.js",
+  "module": "dist/ts-axios.es5.js",
+  "typings": "dist/types/ts-axios.d.ts",
   "files": [
     "dist"
   ],
-  "author": "--username-- <--usermail-->",
+  "author": "hhardyy <zhenbooks@163.com>",
   "repository": {
     "type": "git",
     "url": ""
@@ -19,6 +19,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
+    "serve": "node excemples/server.js",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
@@ -32,7 +33,6 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "postinstall": "ts-node tools/init",
     "travis-deploy-once": "travis-deploy-once"
   },
   "lint-staged": {
@@ -117,5 +117,14 @@
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
     "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "ts-loader": "^6.2.1",
+    "tslint-loader": "^3.5.4",
+    "webpack": "^4.41.6",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }
