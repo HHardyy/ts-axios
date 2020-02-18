@@ -3,16 +3,25 @@ import { AxiosRequestConfig } from './types'
 import xhr from './xhr'
 import { buildUrl } from './helper/url'
 import { transformRequest } from './helper/data'
+import { processHeaders } from './helper/headers'
 
 // 主axios函数
 function axios(config: AxiosRequestConfig): void {
   processConfig(config)
   xhr(config)
 }
+
 // 处理config
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformURL(config)
+  config.headers = transformHeaders(config)
   config.data = transformRequestData(config)
+}
+
+// 对请求头headers做转化
+function transformHeaders(config: AxiosRequestConfig): any {
+  const { headers = {}, data } = config
+  return processHeaders(headers, data)
 }
 
 // 对请求data做处理

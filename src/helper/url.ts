@@ -1,4 +1,16 @@
-import { isDate, isPainObject, enCode } from './util'
+import { isDate, isPainObject } from './util'
+
+// 将字符串转化成url字符编码, 字符转化
+function enCode(val: string): string {
+  return encodeURIComponent(val)
+    .replace(/%40/g, '@')
+    .replace(/%3A/gi, ':')
+    .replace(/%24/g, '$')
+    .replace(/%2C/gi, ',')
+    .replace(/%20/g, '+')
+    .replace(/%5B/gi, '[')
+    .replace(/%5D/gi, ']')
+}
 
 // 辅助函数，处理url参数
 export function buildUrl(url: string, params: any) {
