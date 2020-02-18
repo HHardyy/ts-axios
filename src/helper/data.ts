@@ -7,3 +7,15 @@ export function transformRequest(data: any): any {
   }
   return data
 }
+
+// 请求返回的data尝试转成json
+export function transformResponse(data: any): any {
+  if (typeof data === 'string') {
+    try {
+      data = JSON.parse(data)
+    } catch (e) {
+      // no nothing
+    }
+  }
+  return data
+}
