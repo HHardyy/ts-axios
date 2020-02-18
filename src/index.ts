@@ -1,14 +1,14 @@
 // 引入类型定义
-import { AxiosRequestConfig } from './types'
+import { AxiosRequestConfig, AxiosPromise } from './types'
 import xhr from './xhr'
 import { buildUrl } from './helper/url'
 import { transformRequest } from './helper/data'
 import { processHeaders } from './helper/headers'
 
 // 主axios函数
-function axios(config: AxiosRequestConfig): void {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
-  xhr(config)
+  return xhr(config)
 }
 
 // 处理config
