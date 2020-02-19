@@ -4,7 +4,7 @@ import { parseHeaders } from './helper/headers'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, method = 'get', url, headers, responseType = null, timeout = 0 } = config
+    const { data = null, method = 'get', url, headers, responseType = null, timeout } = config
     const request = new XMLHttpRequest() // new XMLHttpRequest
     if (responseType) {
       request.responseType = responseType
@@ -42,7 +42,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
     // 请求超时处理
     request.ontimeout = function handelTimeout() {
-      reject(new Error(`timeout of ${timeout}ms exceeded`))
+      reject(new Error(`Timeout of ${timeout}ms exceeded`))
     }
 
     Object.keys(headers).forEach(name => {
@@ -54,7 +54,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     })
     request.send(data)
     // 返回状态码在200 - 300之间表示成功
-    function handelResponse(response: any): void {
+    function handelResponse(response: AxiosResponse): void {
       if (response.status >= 200 && response.status < 300) {
         resolve(response)
       } else {

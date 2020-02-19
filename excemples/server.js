@@ -23,6 +23,26 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const router = express.Router()
 
+// error
+router.get('/error/timeout', (req,res) => {
+  setTimeout(() => {
+    res.json({
+      msg: 'hello word this is timeout api'
+    })
+  }, 3000)
+})
+
+router.get('/error/get', (req, res) => {
+  if (Math.random()>0.5) {
+    res.json({
+      msg: 'hello world'
+    })
+  }else{
+    res.status(500)
+    res.end()
+  }
+})
+
 // get
 router.get('/simple/get', function(req,res){
   res.json({
