@@ -23,6 +23,48 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const router = express.Router()
 
+
+// extend
+router.get('/extend/user',(req,res) => {
+  res.json({
+    code: 1001,
+    result: {
+      name: 'hardyName',
+      age: 18
+    },
+    message: 'user请求成功'
+  })
+  res.end();
+})
+
+// -------------------------
+router.post('/extend/post',(req,res)=>{
+  res.json(req.body)
+})
+router.put('/extend/put',(req,res)=>{
+  res.json(req.body)
+})
+router.patch('/extend/patch',(req,res)=>{
+  res.json(req.body)
+})
+
+router.get('/extend/get',(req,res)=>{
+  res.json(req.query)
+})
+router.options('/extend/options',(req,res)=>{
+  res.json(req.query)
+  res.end()
+})
+router.head('/extend/head',(req,res)=>{
+  res.json(req.query)
+  res.end()
+})
+router.delete('/extend/delete',(req,res)=>{
+  res.json(req.query)
+  res.end()
+})
+
+
 // error
 router.get('/error/timeout', (req,res) => {
   setTimeout(() => {

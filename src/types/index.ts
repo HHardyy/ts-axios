@@ -26,7 +26,7 @@ export type Method =
  * timeout：超时
  * */
 export interface AxiosRequestConfig {
-  url: string
+  url?: string
   method?: Method
   data?: any
   params?: any
@@ -44,8 +44,8 @@ export interface AxiosRequestConfig {
  * headers：响应头
  * request：请求
  * */
-export interface AxiosResponse {
-  data: any
+export interface AxiosResponse<T = any> {
+  data: T
   status: number
   statusText: string
   config: AxiosRequestConfig
@@ -54,7 +54,7 @@ export interface AxiosResponse {
 }
 
 // axios函数返回值类型, 继承于Promise的泛型接口，类型定义成AxiosResponse
-export interface AxiosPromise extends Promise<AxiosResponse> {}
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 // Axios错误接口
 export interface AxiosEror extends Error {
@@ -63,4 +63,22 @@ export interface AxiosEror extends Error {
   code?: string | null
   request?: any
   response?: AxiosResponse
+}
+
+// Axios类的接口
+export interface Axios {
+  request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
+  get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+  delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+  head<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+  options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+// 混合类型接口
+export interface AxiosInstance extends Axios {
+  <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
+  <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }

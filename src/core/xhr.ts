@@ -1,7 +1,7 @@
 // 引入类型定义
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types'
-import { parseHeaders } from './helper/headers' // 格式化headers成json对象的格式
-import { createError } from './helper/error' // 创建多个error信息（原来只能catch(e)=>e.message）
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
+import { parseHeaders } from '../helper/headers' // 格式化headers成json对象的格式
+import { createError } from '../helper/error' // 创建多个error信息（原来只能catch(e)=>e.message）
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -13,7 +13,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     if (timeout) {
       request.timeout = timeout // timeout如果不传，默认是0，单位是毫秒
     }
-    request.open(method.toUpperCase(), url, true)
+    request.open(method.toUpperCase(), url!, true)
     // 请求处理
     request.onreadystatechange = function handleLoad() {
       // 响应失败
