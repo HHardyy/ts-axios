@@ -1,6 +1,7 @@
 // 引入类型定义
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types'
-import { parseHeaders } from './helper/headers'
+import { parseHeaders } from './helper/headers' // 格式化headers成json对象的格式
+import { createError } from './helper/error' // 创建多个error信息（原来只能catch(e)=>e.message）
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -38,11 +39,11 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
     // 网络错误处理
     request.onerror = function handelError() {
-      reject(new Error('Network Error'))
+      reject(createError('Network Error', config, null, request))
     }
     // 请求超时处理
     request.ontimeout = function handelTimeout() {
-      reject(new Error(`Timeout of ${timeout}ms exceeded`))
+      reject(createError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', request))
     }
 
     Object.keys(headers).forEach(name => {
@@ -58,7 +59,15 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (response.status >= 200 && response.status < 300) {
         resolve(response)
       } else {
-        reject(new Error(`Request failed width status code ${response.status}`))
+        reject(
+          createError(
+            `Request failed width status code ${response.status}`,
+            config,
+            null,
+            request,
+            response
+          )
+        )
       }
     }
   })
