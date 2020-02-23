@@ -67,6 +67,10 @@ export interface AxiosEror extends Error {
 
 // Axios类的接口
 export interface Axios {
+  interceptors: {
+    request: AxiosInterceptorManager<AxiosRequestConfig>
+    response: AxiosInterceptorManager<AxiosResponse>
+  }
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
   delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -81,4 +85,18 @@ export interface Axios {
 export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+// 拦截器的接口定义
+export interface AxiosInterceptorManager<T> {
+  use(resolve: ResolvedFn<T>, reject?: RejectedFn<T>): number
+  eject(id: number): void
+}
+
+// 拦截器的请求和响应是不同类型，所以定义成泛型（请求是AxiosRequestConfig, 响应是AxiosResponse）
+export interface ResolvedFn<T> {
+  (val: T): T | Promise<T>
+}
+export interface RejectedFn<T> {
+  (error: any): any
 }

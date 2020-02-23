@@ -24,6 +24,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const router = express.Router()
 
 
+// interceptor
+router.get('/interceptor/get', (req, res) => {
+  res.end('hello hardy ')
+})
+
 // extend
 router.get('/extend/user',(req,res) => {
   res.json({

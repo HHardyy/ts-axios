@@ -1,7 +1,34 @@
-import { AxiosPromise, AxiosRequestConfig, Method } from '../types'
+import {
+  AxiosPromise,
+  AxiosRequestConfig,
+  AxiosResponse,
+  Method,
+  ResolvedFn,
+  RejectedFn
+} from '../types'
 import disPatchRequest from './dispatchRequest'
+import InterceptorManager from './interceptorManager'
+
+// 拦截器接口定义
+interface Interceptors {
+  request: InterceptorManager<AxiosRequestConfig>
+  response: InterceptorManager<AxiosResponse>
+}
+
+interface PromiseChain<T> {
+  resolved: ResolvedFn<T> | ((config: AxiosRequestConfig) => AxiosPromise)
+  rejected?: RejectedFn<T>
+}
 
 export default class Axios {
+  interceptors: Interceptors
+  constructor() {
+    // 初始化，用户自己去用
+    this.interceptors = {
+      request: new InterceptorManager<AxiosRequestConfig>(),
+      response: new InterceptorManager<AxiosResponse>()
+    }
+  }
   request(url: any, config?: any): AxiosPromise {
     if (typeof url === 'string') {
       if (!config) {
@@ -11,7 +38,26 @@ export default class Axios {
     } else {
       config = url
     }
-    return disPatchRequest(config)
+
+    const chain: PromiseChain<any>[] = [
+      {
+        resolved: disPatchRequest,
+        rejected: undefined
+      }
+    ]
+
+    this.interceptors.request.forEach(interceptor => {
+      chain.unshift(interceptor)
+    })
+    this.interceptors.response.forEach(interceptor => {
+      chain.push(interceptor)
+    })
+    let promise = Promise.resolve(config)
+    while (chain.length) {
+      const { resolved, rejected } = chain.shift()! // 类型断言，断言它不为空
+      promise = promise.then(resolved, rejected)
+    }
+    return promise
   }
   get(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithOutData('get', url, config)
