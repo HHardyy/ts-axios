@@ -3,7 +3,7 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import xhr from './xhr'
 import { buildUrl } from '../helper/url'
 import { transformRequest, transformResponse } from '../helper/data'
-import { processHeaders } from '../helper/headers'
+import { flattenHeaders, processHeaders } from '../helper/headers'
 
 // 主axios函数
 export default function disPatchRequest(config: AxiosRequestConfig): AxiosPromise {
@@ -18,6 +18,7 @@ function processConfig(config: AxiosRequestConfig): void {
   config.url = transformURL(config)
   config.headers = transformHeaders(config)
   config.data = transformRequestData(config)
+  config.headers = flattenHeaders(config.headers, config.method!)
 }
 
 // 对请求头headers做转化

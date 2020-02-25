@@ -8,6 +8,7 @@ import {
 } from '../types'
 import disPatchRequest from './dispatchRequest'
 import InterceptorManager from './interceptorManager'
+import mergeConfig from './mergeConfig'
 
 // 拦截器接口定义
 interface Interceptors {
@@ -21,8 +22,10 @@ interface PromiseChain<T> {
 }
 
 export default class Axios {
+  defaults: AxiosRequestConfig
   interceptors: Interceptors
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     // 初始化，用户自己去用
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
@@ -38,6 +41,8 @@ export default class Axios {
     } else {
       config = url
     }
+
+    config = mergeConfig(this.defaults, config)
 
     const chain: PromiseChain<any>[] = [
       {

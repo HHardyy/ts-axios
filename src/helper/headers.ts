@@ -1,4 +1,5 @@
-import { isPainObject } from './util'
+import { deepMerge, isPainObject } from './util'
+import { Method } from '../types'
 
 // 规范化content-type,小写转化成大写
 function normallizeHeadersName(headers: any, normallizeName: string): void {
@@ -42,4 +43,16 @@ export function parseHeaders(headers: string): any {
     parsed[key] = value
   })
   return parsed
+}
+
+export function flattenHeaders(headers: any, method: Method): any {
+  if (!headers) {
+    return headers
+  }
+  headers = deepMerge(headers.common, headers[method], headers)
+  const methodToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+  methodToDelete.forEach(method => {
+    delete headers[method]
+  })
+  return headers
 }

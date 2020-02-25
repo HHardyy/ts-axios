@@ -23,6 +23,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const router = express.Router()
 
+// config
+router.post('/config/post', (req, res) => {
+  res.json(req.body)
+})
 
 // interceptor
 router.get('/interceptor/get', (req, res) => {
