@@ -2,8 +2,8 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import xhr from './xhr'
 import { buildUrl } from '../helper/url'
-import { transformRequest, transformResponse } from '../helper/data'
-import { flattenHeaders, processHeaders } from '../helper/headers'
+import { flattenHeaders } from '../helper/headers'
+import transform from './transform'
 
 // 主axios函数
 export default function disPatchRequest(config: AxiosRequestConfig): AxiosPromise {
@@ -16,20 +16,8 @@ export default function disPatchRequest(config: AxiosRequestConfig): AxiosPromis
 // 处理config
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformURL(config)
-  config.headers = transformHeaders(config)
-  config.data = transformRequestData(config)
+  config.data = transform(config.data, config.headers, config.transformRequest)
   config.headers = flattenHeaders(config.headers, config.method!)
-}
-
-// 对请求头headers做转化
-function transformHeaders(config: AxiosRequestConfig): any {
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-
-// 对请求data做处理
-function transformRequestData(config: AxiosRequestConfig): any {
-  return transformRequest(config.data)
 }
 
 // 调用buildUrl对url进行转化
@@ -40,6 +28,6 @@ function transformURL(config: AxiosRequestConfig): string {
 
 // 对返回的data进行处理
 function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data)
+  res.data = transform(res.data, res.headers, res.config.transformResponse)
   return res
 }

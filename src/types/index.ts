@@ -33,6 +33,8 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
 
   [propsName: string]: any
 }
@@ -90,6 +92,11 @@ export interface AxiosInstance extends Axios {
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
+// axios.create接口
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
+
 // 拦截器的接口定义
 export interface AxiosInterceptorManager<T> {
   use(resolve: ResolvedFn<T>, reject?: RejectedFn<T>): number
@@ -102,4 +109,9 @@ export interface ResolvedFn<T> {
 }
 export interface RejectedFn<T> {
   (error: any): any
+}
+
+// 请求发起之前，请求响应之前可以对数据处理的两个方法的接口定义
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
