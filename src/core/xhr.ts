@@ -5,7 +5,15 @@ import { createError } from '../helper/error' // 创建多个error信息（原�
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, method = 'get', url, headers, responseType = null, timeout } = config
+    const {
+      data = null,
+      method = 'get',
+      url,
+      headers,
+      responseType = null,
+      timeout,
+      cancelToken
+    } = config
     const request = new XMLHttpRequest() // new XMLHttpRequest
     if (responseType) {
       request.responseType = responseType
@@ -53,6 +61,15 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request.setRequestHeader(name, headers[name])
       }
     })
+
+    // 如果有cancelToken，则取消掉这个xhr的请求
+    if (cancelToken) {
+      cancelToken.promise.then(reason => {
+        request.abort()
+        reject(reason)
+      })
+    }
+
     request.send(data)
     // 返回状态码在200 - 300之间表示成功
     function handelResponse(response: AxiosResponse): void {
