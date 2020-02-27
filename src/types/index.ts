@@ -36,6 +36,7 @@ export interface AxiosRequestConfig {
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
   cancelToken?: CancelToken
+  withCredentials?: boolean // 同域情况下会默认携带当前域的cookie，但是在跨域的情况下默认不会携带当前域下的cookie，所以需要携带的话，只需要配置withCredentials为true即可
 
   [propsName: string]: any
 }

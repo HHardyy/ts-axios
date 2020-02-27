@@ -5,6 +5,7 @@ import { createError } from '../helper/error' // 创建多个error信息（原�
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
+    // 传入的一些config
     const {
       data = null,
       method = 'get',
@@ -12,7 +13,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       headers,
       responseType = null,
       timeout,
-      cancelToken
+      cancelToken,
+      withCredentials
     } = config
     const request = new XMLHttpRequest() // new XMLHttpRequest
     if (responseType) {
@@ -20,6 +22,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
     if (timeout) {
       request.timeout = timeout // timeout如果不传，默认是0，单位是毫秒
+    }
+    if (withCredentials) {
+      request.withCredentials = withCredentials // 判断是否允许跨域请求携带cookie
     }
     request.open(method.toUpperCase(), url!, true)
     // 请求处理

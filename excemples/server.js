@@ -1,9 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const webpack = require('webpack');
 const webpackDevMiddleWare = require('webpack-dev-middleware');
 const webpackHotMiddleWare = require('webpack-hot-middleware');
 const WebpackConfig = require('./webpack.config');
+
+// 启动服务2
+require('./server2');
 
 const app = express();
 const compiler = webpack(WebpackConfig)
@@ -20,8 +24,14 @@ app.use(webpackHotMiddleWare(compiler))
 app.use(express.static(__dirname))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
 
 const router = express.Router()
+
+// more
+router.get('/more/get', (req, res) => {
+  res.json(req.cookies);
+})
 
 // cancel
 router.get('/cancel/get', (req, res) => {
