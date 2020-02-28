@@ -36,6 +36,7 @@ export type Method =
  * onUploadProgress：上传时的配置，可以拿到上传进度等
  * auth：http授权
  * validateStatus：自定义合法状态码
+ * paramsSerializer：自定义参数序列化
  * */
 export interface AxiosRequestConfig {
   url?: string
@@ -55,6 +56,7 @@ export interface AxiosRequestConfig {
   onUploadProgress?: (e: ProgressEvent) => void
   auth?: AxiosBasicCredentials
   validateStatus?: (status: number) => boolean
+  paramsSerializer?: (params: any) => string
 
   [propsName: string]: any
 }

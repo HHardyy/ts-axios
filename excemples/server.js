@@ -39,6 +39,11 @@ app.use(multipart({
 
 const router = express.Router()
 
+// paramsSerializer
+router.get('/paramsSerializer/get', (req, res) => {
+  res.json('hello paramsSerializer')
+})
+
 // validatestatus
 router.get('/validatestatus/304', (req, res) => {
   res.status(304)
