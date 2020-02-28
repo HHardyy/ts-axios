@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const multipart = require('connect-multiparty');
 const webpack = require('webpack');
 const webpackDevMiddleWare = require('webpack-dev-middleware');
 const webpackHotMiddleWare = require('webpack-hot-middleware');
 const WebpackConfig = require('./webpack.config');
+const path = require('path');
 
 // 启动服务2
 require('./server2');
@@ -21,12 +23,26 @@ app.use(webpackDevMiddleWare(compiler, {
 }))
 
 app.use(webpackHotMiddleWare(compiler))
-app.use(express.static(__dirname))
+app.use(express.static(__dirname, {
+  setHeaders(res) {
+    res.cookie('XSRF-TOKEN-D', '1234abc')
+  }
+}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
+app.use(multipart({
+  uploadDir: path.resolve(__dirname, 'upload-file')
+}))
+
 const router = express.Router()
+
+// file
+router.post('/file/upload', (req, res) => {
+  console.log(req.body, req.files)
+  res.end('upload success');
+})
 
 // more
 router.get('/more/get', (req, res) => {

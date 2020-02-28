@@ -49,3 +49,8 @@ export function deepMerge(...objs: any[]): any {
   })
   return result
 }
+
+// 是否是formData
+export function isFormData(val: any): val is FormData {
+  return typeof val !== 'undefined' && val instanceof FormData
+}

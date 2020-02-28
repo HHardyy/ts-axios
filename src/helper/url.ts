@@ -1,5 +1,10 @@
 import { isDate, isPainObject } from './util'
 
+interface URLOrigin {
+  protocol: string
+  host: string
+}
+
 // 将字符串转化成url字符编码, 字符转化
 function enCode(val: string): string {
   return encodeURIComponent(val)
@@ -51,4 +56,25 @@ export function buildUrl(url: string, params: any) {
     }
   })
   return url
+}
+
+// 是否同源
+export function isURLSameOrigin(requestURL: string): boolean {
+  const parsedOrigin = resolveURL(requestURL)
+  return (
+    parsedOrigin.protocol === currentOrigin.protocol && parsedOrigin.host === currentOrigin.host
+  )
+}
+
+const urlParsingNode = document.createElement('a')
+const currentOrigin = resolveURL(window.location.href)
+
+// 将域名和端口解析出来
+function resolveURL(url: string): URLOrigin {
+  urlParsingNode.setAttribute('href', url)
+  const { protocol, host } = urlParsingNode
+  return {
+    protocol,
+    host
+  }
 }
