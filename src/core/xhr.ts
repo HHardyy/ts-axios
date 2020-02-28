@@ -4,6 +4,7 @@ import { parseHeaders } from '../helper/headers' // 格式化headers成json对�
 import { createError } from '../helper/error' // 创建多个error信息（原来只能catch(e)=>e.message）
 import { isURLSameOrigin } from '../helper/url'
 import { isFormData } from '../helper/util'
+
 import cookie from '../helper/cookies'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
@@ -22,7 +23,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfHeaderName,
       onDownloadProgress,
       onUploadProgress,
-      auth
+      auth,
+      validateStatus
     } = config
 
     const request = new XMLHttpRequest() // new XMLHttpRequest
@@ -133,7 +135,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
     // 返回状态码在200 - 300之间表示成功
     function handelResponse(response: AxiosResponse): void {
-      if (response.status >= 200 && response.status < 300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
         reject(

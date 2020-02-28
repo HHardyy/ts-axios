@@ -39,6 +39,12 @@ app.use(multipart({
 
 const router = express.Router()
 
+// validatestatus
+router.get('/validatestatus/304', (req, res) => {
+  res.status(304)
+  res.json('hello 304 code')
+})
+
 // auth
 router.post('/auth/post', (req, res) => {
   const auth = req.headers.authorization

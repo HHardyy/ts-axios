@@ -34,7 +34,8 @@ export type Method =
  * xsrfHeaderName：防止XSRF攻击的请求头配置
  * onDownloadProgress：下载时的配置，可以拿到下载的进度等
  * onUploadProgress：上传时的配置，可以拿到上传进度等
- * auth：http授权(支持设置username, password)
+ * auth：http授权
+ * validateStatus：自定义合法状态码
  * */
 export interface AxiosRequestConfig {
   url?: string
@@ -53,6 +54,7 @@ export interface AxiosRequestConfig {
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
   auth?: AxiosBasicCredentials
+  validateStatus?: (status: number) => boolean
 
   [propsName: string]: any
 }
