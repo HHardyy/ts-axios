@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const atob = require('atob');
 const multipart = require('connect-multiparty');
 const webpack = require('webpack');
 const webpackDevMiddleWare = require('webpack-dev-middleware');
@@ -37,6 +38,23 @@ app.use(multipart({
 }))
 
 const router = express.Router()
+
+// auth
+router.post('/auth/post', (req, res) => {
+  const auth = req.headers.authorization
+  console.log(auth, '===========');
+  const [type, credentials] = auth.split(' ');
+  console.log(auth.split(' '), ':===auth.split(\' \')')
+  console.log(credentials, '===========');
+  console.log(atob(credentials))
+  const [username, password] = atob(credentials).split(':')
+  if ( type === 'Basic' && username === 'hardy' && password === '12345' ) {
+    res.json(req.body)
+  }else{
+    res.status(401)
+    res.end('Un Authorization')
+  }
+})
 
 // file
 router.post('/file/upload', (req, res) => {

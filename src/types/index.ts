@@ -16,7 +16,7 @@ export type Method =
   | 'PATCH'
 
 /*
- * axios参数类型 の接口定义
+ * axios方法的接口配置说明
  * auther Hardy
  * date 2020.02.18
  * url：请求地址
@@ -29,11 +29,12 @@ export type Method =
  * transformRequest： 请求转换(请求之前可以对数据进行操作)
  * transformResponse： 响应转换(响应之前可以对数据进行操作)
  * cancelToken：取消本次请求
- * withCredentials：是否允许请求跨域
+ * withCredentials：是否允许请求跨域（同域情况下会默认携带当前域的cookie，但是在跨域的情况下默认不会携带当前域下的cookie，所以需要携带的话，只需要配置withCredentials为true即可）
  * xsrfCookieName：防止XSRF攻击的cookie Name
  * xsrfHeaderName：防止XSRF攻击的请求头配置
  * onDownloadProgress：下载时的配置，可以拿到下载的进度等
  * onUploadProgress：上传时的配置，可以拿到上传进度等
+ * auth：http授权(支持设置username, password)
  * */
 export interface AxiosRequestConfig {
   url?: string
@@ -46,11 +47,12 @@ export interface AxiosRequestConfig {
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
   cancelToken?: CancelToken
-  withCredentials?: boolean // 同域情况下会默认携带当前域的cookie，但是在跨域的情况下默认不会携带当前域下的cookie，所以需要携带的话，只需要配置withCredentials为true即可
+  withCredentials?: boolean
   xsrfCookieName?: string
   xsrfHeaderName?: string
   onDownloadProgress?: (e: ProgressEvent) => void
   onUploadProgress?: (e: ProgressEvent) => void
+  auth?: AxiosBasicCredentials
 
   [propsName: string]: any
 }
@@ -171,4 +173,9 @@ export interface Cancel {
 
 export interface CancelStatic {
   new (message?: string): Cancel
+}
+
+export interface AxiosBasicCredentials {
+  username: string
+  password: string
 }
