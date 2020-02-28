@@ -16,7 +16,9 @@ export type Method =
   | 'PATCH'
 
 /*
- * axios参数类型接口定义
+ * axios参数类型 の接口定义
+ * auther Hardy
+ * date 2020.02.18
  * url：请求地址
  * method：请求方式
  * data：（post）请求参数
@@ -24,6 +26,14 @@ export type Method =
  * headers：请求头
  * responseType：返回值类型
  * timeout：超时
+ * transformRequest： 请求转换(请求之前可以对数据进行操作)
+ * transformResponse： 响应转换(响应之前可以对数据进行操作)
+ * cancelToken：取消本次请求
+ * withCredentials：是否允许请求跨域
+ * xsrfCookieName：防止XSRF攻击的cookie Name
+ * xsrfHeaderName：防止XSRF攻击的请求头配置
+ * onDownloadProgress：下载时的配置，可以拿到下载的进度等
+ * onUploadProgress：上传时的配置，可以拿到上传进度等
  * */
 export interface AxiosRequestConfig {
   url?: string
