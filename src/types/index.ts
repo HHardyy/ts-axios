@@ -37,6 +37,7 @@ export type Method =
  * auth：http授权
  * validateStatus：自定义合法状态码
  * paramsSerializer：自定义参数序列化
+ * baseURL：默认请求url
  * */
 export interface AxiosRequestConfig {
   url?: string
@@ -57,6 +58,7 @@ export interface AxiosRequestConfig {
   auth?: AxiosBasicCredentials
   validateStatus?: (status: number) => boolean
   paramsSerializer?: (params: any) => string
+  baseURL?: string
 
   [propsName: string]: any
 }

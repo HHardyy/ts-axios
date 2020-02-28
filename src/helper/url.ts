@@ -27,7 +27,6 @@ export function buildUrl(
     return url
   }
   let serializedParams
-
   if (paramsSerializer) {
     serializedParams = paramsSerializer(params)
   } else if (isURLSearchParams(params)) {
@@ -68,6 +67,15 @@ export function buildUrl(
   }
 
   return url
+}
+
+// 是否是一个绝对地址
+export function isAbsoluteURL(url: string): boolean {
+  return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+// baseURL和relativeURL做拼接
+export function combineURL(baseUrl: string, relativeURL?: string): string {
+  return relativeURL ? baseUrl.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseUrl
 }
 
 // 是否同源
